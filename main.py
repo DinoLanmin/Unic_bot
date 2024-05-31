@@ -3,13 +3,38 @@ import telebot as tb
 from telebot import types as tb_types
 
 # Telegram Bot info
+###################
 token = '7089389928:AAFhEBkRaV5zNqv7J5QDGbe2eEvRpznBnaU'
 bot = tb.TeleBot(token)
 
 id_list_user: dict = None
 
 
+###################
+
+##########################
 # System function on bot.
+##########################
+# ---------#ADD#---------#
+# Add - adding in system(user, ...).
+@bot.message_handler(commands=['+ Add'])
+def add(message: tb_types.Message):
+    while True:
+        object_list = ['#user', '#admin', '#list']
+        bot.send_message(message.chat.id,
+                         text=('#codes of object:\n'
+                               '#user - add user in system\n'
+                               'admin - add admin in system\n#list - to add list in database\n'
+                               '#exit - to exit this function.'))
+
+        command = bot.send_message(message.chat.id, text='Enter #name of object to adding in to the system:')
+
+        if command not in object_list:
+
+            bot.send_message(message.chat.id, text='Your # not in system parameter.')
+
+
+# -------#UPGRADE#-------#
 # Upgrade - change and save info of level user in database.
 def upgrade(message: tb_types.Message):
     global id_list_user
@@ -31,6 +56,7 @@ def upgrade(message: tb_types.Message):
             json.dump(id_list_user, update_file)
 
 
+# ---#AUTHENTICATION#---#
 # Authentication - create level access.
 def authentication(message: tb_types.Message):
     # Retrieving data from database_users.json.
@@ -80,6 +106,7 @@ def authentication(message: tb_types.Message):
     return 'Quest'
 
 
+# -------#PANEL#-------#
 # Panel - generate a work space for user.
 def panel(level_user: str, message: tb_types.Message):
     markup = tb_types.ReplyKeyboardMarkup(resize_keyboard=True)
@@ -114,6 +141,7 @@ def panel(level_user: str, message: tb_types.Message):
         markup.add(subscribe_button)
 
 
+# --------#CORE#--------#
 # Core of Bot system
 @bot.message_handler(commands=['start'])
 def core(message: tb_types.Message):
