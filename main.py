@@ -8,6 +8,7 @@ token = '7089389928:AAFhEBkRaV5zNqv7J5QDGbe2eEvRpznBnaU'
 bot = tb.TeleBot(token)
 
 id_list_user: dict = None
+database_users: dict = None
 
 
 ###################
@@ -19,6 +20,7 @@ id_list_user: dict = None
 # Add - adding in system(user, ...).
 @bot.message_handler(commands=['+ Add'])
 def add(message: tb_types.Message):
+    global database_users
     while True:
         object_list = ['#user', '#admin', '#list']
         bot.send_message(message.chat.id,
@@ -30,8 +32,38 @@ def add(message: tb_types.Message):
         command = bot.send_message(message.chat.id, text='Enter #name of object to adding in to the system:')
 
         if command not in object_list:
-
             bot.send_message(message.chat.id, text='Your # not in system parameter.')
+
+        user_system_name = bot.send_message(message.chat.id, text='Enter the system name of user in database: ')
+        user_id: str = bot.send_message(message.chat.id,
+                                        text='Enter id of user, if you now this, if not write None')
+
+        user_id_auth = False
+        while not user_id_auth:
+
+            if user_id == 'None':
+                user_id_auth = True
+                continue
+
+            elif user_id.isalpha():
+                bot.send_message(message.chat.id, text='ID cannot contain letters, please try again.')
+
+            elif user_id.isdigit():
+                user_id_auth = True
+                continue
+
+        first_name = bot.send_message(message.chat.id, text='Enter the first name of user: ')
+
+        last_name = bot.send_message(message.chat.id, text='Enter the last name of user: ')
+
+        database_users['admin' if command == '#admin' else 'user'][user_system_name] = {'user_id': user_id,
+                                                                                        'first_name': first_name,
+                                                                                        'lase_name': last_name}
+
+        if command == '#list':
+            list_name = bot.send_message(message.chat.id, text='Enter name of list: ')
+
+            database_users.update({list_name: {}})
 
 
 # -------#UPGRADE#-------#
@@ -59,6 +91,7 @@ def upgrade(message: tb_types.Message):
 # ---#AUTHENTICATION#---#
 # Authentication - create level access.
 def authentication(message: tb_types.Message):
+    global database_users
     # Retrieving data from database_users.json.
     try:
         with open('database_users.json', 'r', encoding='UTF-8') as read_file:
