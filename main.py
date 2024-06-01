@@ -17,6 +17,8 @@ database_users: dict = None
 @bot.message_handler(commands=['- Deleted'])
 def deleted(message: tb_types.Message):
     pass
+
+
 # __________ADD__________/
 # Add - adding in system(user, ...).
 @bot.message_handler(commands=['+ Add'])
