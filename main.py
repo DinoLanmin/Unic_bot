@@ -14,15 +14,40 @@ database_users: dict = None
 ##########################
 # System function on bot.
 ##########################
+# ________DELETED________/
+# Deleted - this function is deleted object.
 @bot.message_handler(commands=['- Deleted'])
 def deleted(message: tb_types.Message):
-    pass
+    if message.from_user.id == id_list_user[0] and id_list_user[1] != 'Full':
+        bot.send_message(message.chat.id, text="'You haven't got access to this function.")
+
+    bot.send_message(message.chat.id, text='Object type: user, admin, list.')
+
+    object_type = bot.send_message(message.chat.id, text='Enter the object type to deleted: ')
+
+    name_of_object = bot.send_message(message.chat.id, text='Enter name of object: ')
+
+    match object_type:
+        case 'user':
+
+            del database_users['user'][name_of_object]
+
+        case 'admin':
+
+            del database_users['admin'][name_of_object]
+
+        case 'list':
+
+            del database_users[name_of_object]
 
 
 # __________ADD__________/
 # Add - adding in system(user, ...).
 @bot.message_handler(commands=['+ Add'])
 def add(message: tb_types.Message):
+    if message.from_user.id == id_list_user[0] and id_list_user[1] != 'Full':
+        bot.send_message(message.chat.id, text="'You haven't got access to this function.")
+
     global database_users
     while True:
         object_list = ['#user', '#admin', '#list']
