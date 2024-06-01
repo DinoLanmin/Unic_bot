@@ -3,7 +3,7 @@ import telebot as tb
 from telebot import types as tb_types
 
 # Telegram Bot info
-###################
+##########################
 token = '7089389928:AAFhEBkRaV5zNqv7J5QDGbe2eEvRpznBnaU'
 bot = tb.TeleBot(token)
 
@@ -11,12 +11,13 @@ id_list_user: dict = None
 database_users: dict = None
 
 
-###################
-
 ##########################
 # System function on bot.
 ##########################
-# ---------#ADD#---------#
+@bot.message_handler(commands=['- Deleted'])
+def deleted(message: tb_types.Message):
+    pass
+# __________ADD__________/
 # Add - adding in system(user, ...).
 @bot.message_handler(commands=['+ Add'])
 def add(message: tb_types.Message):
@@ -66,7 +67,7 @@ def add(message: tb_types.Message):
             database_users.update({list_name: {}})
 
 
-# -------#UPGRADE#-------#
+# ________UPGRADE________/
 # Upgrade - change and save info of level user in database.
 def upgrade(message: tb_types.Message):
     global id_list_user
@@ -88,7 +89,7 @@ def upgrade(message: tb_types.Message):
             json.dump(id_list_user, update_file)
 
 
-# ---#AUTHENTICATION#---#
+# ____AUTHENTICATION____/
 # Authentication - create level access.
 def authentication(message: tb_types.Message):
     global database_users
@@ -139,7 +140,7 @@ def authentication(message: tb_types.Message):
     return 'Quest'
 
 
-# -------#PANEL#-------#
+# ________PANEL________/
 # Panel - generate a work space for user.
 def panel(level_user: str, message: tb_types.Message):
     markup = tb_types.ReplyKeyboardMarkup(resize_keyboard=True)
@@ -174,7 +175,7 @@ def panel(level_user: str, message: tb_types.Message):
         markup.add(subscribe_button)
 
 
-# --------#CORE#--------#
+# _________CORE_________/
 # Core of Bot system
 @bot.message_handler(commands=['start'])
 def core(message: tb_types.Message):
