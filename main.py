@@ -4,7 +4,7 @@ from telebot import types as tb_types
 
 # Telegram Bot info
 ##########################
-token = '7089389928:AAFhEBkRaV5zNqv7J5QDGbe2eEvRpznBnaU'
+token = ''  # не залишай токен відкритим)
 bot = tb.TeleBot(token)
 
 id_list_user: dict = None
@@ -209,6 +209,10 @@ def core(message: tb_types.Message):
     upgrade(message)
 
     panel(id_list_user[message.from_user.id], message)
+
+
+def my_new_super_function():
+    return ''.join('Шо?')
 
 
 bot.polling(none_stop=True)
